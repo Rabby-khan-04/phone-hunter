@@ -31,11 +31,28 @@
             </div>
         </section>
 
+        <!-- Spinner -->
+        <section id="spinner" class="d-none">
+            <div class="container text-center">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Display Search Result -->
         <section>
             <div class="container">
                 <div id="phone-container" class="row row-cols-1 row-cols-md-3 g-4">
 
+                </div>
+
+                <div class="text-center py-5">
+                    <button id="view-all-btn" class="btn btn-warning">View All</button>
+                </div>
+
+                <div id="no-phone-message" class="bg-warning p-2 d-none">
+                    <h2 class="text-center">No Phone Found. Please try another Keyword</h2>
                 </div>
             </div>
         </section>

@@ -22,24 +22,35 @@ const displayPhones = (phones) => {
   console.log(phones);
   const phonesContainer = document.getElementById("phone-container");
   phonesContainer.innerHTML = "";
-  phones.forEach((phone) => {
-    const { brand, phone_name, slug, image } = phone;
-    const phoneDiv = document.createElement("div");
-    phoneDiv.classList.add("col");
-    phoneDiv.innerHTML = `
-    <div class="card p-4">
-      <img src="${image}" class="card-img-top" alt="product-img">
-      <div class="card-body">
-        <h5 class="card-title text-center">${phone_name}</h5>
-        <p class="card-text text-center">Brand: ${brand}</p>
+  // phones = phones.slice(0, 9);
+
+  const noPhoneMsg = document.getElementById("no-phone-message");
+
+  if (phones.length == 0) {
+    noPhoneMsg.classList.remove("d-none");
+  } else {
+    noPhoneMsg.classList.add("d-none");
+    phones.forEach((phone) => {
+      const { brand, phone_name, slug, image } = phone;
+      const phoneDiv = document.createElement("div");
+      phoneDiv.classList.add("col");
+      phoneDiv.innerHTML = `
+      <div class="card p-4">
+        <img src="${image}" class="card-img-top" alt="product-img">
+        <div class="card-body">
+          <h5 class="card-title text-center">${phone_name}</h5>
+          <p class="card-text text-center">Brand: ${brand}</p>
+        </div>
       </div>
-    </div>
-    `;
-    phonesContainer.appendChild(phoneDiv);
-  });
+      `;
+      phonesContainer.appendChild(phoneDiv);
+    });
+  }
+  toggleSpinner(false);
 };
 
 document.getElementById("search-btn").addEventListener("click", () => {
+  toggleSpinner(true);
   const searchField = document.getElementById("search-field");
   const searchText = searchField.value;
 
@@ -47,4 +58,13 @@ document.getElementById("search-btn").addEventListener("click", () => {
   searchField.value = "";
 });
 
-loadPhones();
+const toggleSpinner = (isLoading) => {
+  const spinner = document.getElementById("spinner");
+  if (isLoading) {
+    spinner.classList.remove("d-none");
+  } else {
+    spinner.classList.add("d-none");
+  }
+};
+
+// loadPhones("samsung");
