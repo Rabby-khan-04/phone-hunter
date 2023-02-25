@@ -19,7 +19,7 @@ const loadPhones = async (searchText, dataLimit) => {
 };
 
 const displayPhones = (phones, dataLimit) => {
-  console.log(phones);
+  // console.log(phones);
   const phonesContainer = document.getElementById("phone-container");
   phonesContainer.innerHTML = "";
 
@@ -44,9 +44,10 @@ const displayPhones = (phones, dataLimit) => {
       phoneDiv.innerHTML = `
       <div class="card p-4">
         <img src="${image}" class="card-img-top" alt="product-img">
-        <div class="card-body">
-          <h5 class="card-title text-center">${phone_name}</h5>
-          <p class="card-text text-center">Brand: ${brand}</p>
+        <div class="card-body text-center">
+          <h5 class="card-title">${phone_name}</h5>
+          <p class="card-text">Brand: ${brand}</p>
+          <button data-bs-toggle="modal" data-bs-target="#phone-detalis" onclick="showDetails('${slug}')" class="btn btn-warning">View Details</button>
         </div>
       </div>
       `;
@@ -82,4 +83,48 @@ document.getElementById("view-all-btn").addEventListener("click", () => {
   document.getElementById("vshow-all").classList.add("d-none");
 });
 
-// loadPhones("samsung");
+document.getElementById("search-field").addEventListener("keydown", (e) => {
+  if (e.key == "Enter") {
+    processAndDisplay(10);
+  }
+});
+
+const showDetails = async (slug) => {
+  const url = `https://openapi.programming-hero.com/api/phone/${slug}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+  showPhoneDetails(data.data);
+};
+
+const showPhoneDetails = (phone) => {
+  console.log(phone);
+  const { name, releaseDate, brand, image, mainFeatures, others } = phone;
+
+  const { chipSet, displaySize, memory, sensors, storage } = mainFeatures;
+
+  const { Bluetooth, GPS, NFC, Radio, USB, WLAN } = others;
+
+  document.getElementById("modal-title").innerText = name;
+  document.getElementById("main-fetures").innerHTML = `
+  <h3>Main Features</h3>
+  <ul>
+  <li>${chipSet ? chipSet : "Data Not Found"}</li>
+  <li>${displaySize ? displaySize : "Data Not Found"}</li>
+  <li>${memory ? memory : "Data Not Found"}</li>
+  <li>${storage ? storage : "Data Not Found"}</li>
+  </ul>
+  `;
+  const sensorsDiv = document.createElement("div");
+  const sensorUl = document.createElement("ul");
+  sensorsDiv.innerHTML = `<h3>Main Features</h3>`;
+  sensorsDiv.appendChild(sensorUl);
+  sensors.forEach((sensor) => {
+    const sensorLi = document.createElement("li");
+    sensorLi.innerText = sensor;
+    sensorUl.appendChild(sensorLi);
+  });
+  document.getElementById("main-fetures").appendChild(sensorsDiv);
+};
+
+loadPhones("samsung");
