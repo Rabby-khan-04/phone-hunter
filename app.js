@@ -127,4 +127,4 @@ const showPhoneDetails = (phone) => {
   document.getElementById("main-fetures").appendChild(sensorsDiv);
 };
 
-loadPhones("samsung");
+loadPhones("samsung", 10);
